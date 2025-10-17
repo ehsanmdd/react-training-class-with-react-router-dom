@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+    --bg-color-primary: oklch(20% 0.042 265.755);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color-primary);
+}
+
