@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function CreateUsers() {
-  const [formData, setFormData] = useState({ username: "", email: "" });
+  const [formData, setFormData] = useState({ name: "", email: "" });
   const [response, setResponse] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -16,25 +16,14 @@ function CreateUsers() {
 
   const handelSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      if (formData.email.length || formData.username.length) {
-        await axios({
-          method: "post",
-          url: "https://jsonplaceholder.typicode.com/users",
-          data: formData,
-        }).then((res) => {
-          // console.log(res);
-          setResponse(res.data);
-        });
-        setError(null);
-      } else {
-        setError('Input Filds Is Empty')
-      }
-    } catch (error) {
-      setError("Error Creating User :" + error.message);
-      setResponse(null);
+    
+   if (formData.email.length || formData.name.length) {
+      setUsers(prevUsers => [...prevUsers, { ...formData, id: prevUsers.length + 1 }]);
+      setError(null);
+    } else {
+      setError("Input Fields Is Empty");
     }
+    console.log(users); 
   };
 
   const userData = async () => {
@@ -46,19 +35,11 @@ function CreateUsers() {
       });
   };
 
-  const deleteUser = async (id) => {
+  const deleteUser = (id) => {
     try {
-      await axios({
-        method: "delete",
-        url: `https://jsonplaceholder.typicode.com/users/${id}`,
-      }).then((res) => {
-        if (res.status === 200) {
-          setDeleteResponse(`User with ID ${id} was "deleted" `);
-          setUsers(users.filter((user) => user.id !== id));
-          setError(null);
-        }
-        console.log(res);
-      });
+      setUsers(users.filter((user) => user.id !== id));
+      setDeleteResponse(`User with ID ${id} was "deleted" `);
+      setError(null);
     } catch (error) {
       setError("Error Deleting User: " + error.message);
     }
@@ -78,14 +59,14 @@ function CreateUsers() {
           className="text-white flex flex-col justify-center gap-3 mt-5"
         >
           <label className="text-white" htmlFor="username">
-            Username
+            Name
           </label>
           <input
             className="px-2 focus:outline-0 border-b-2 rounded-lg border-lime-400"
             type="text"
-            id="username"
-            placeholder="Type Your Username"
-            name="username"
+            id="name"
+            placeholder="Type Your Name"
+            name="name"
             value={formData.name}
             onChange={handelFormData}
           />
@@ -113,7 +94,7 @@ function CreateUsers() {
             <h2>Response from Server:</h2>
             <div className="flex flex-row p-10 gap-5">
               <span>{"Id:" + " " + response.id}</span>
-              <span>{"Username:" + " " + response.username}</span>
+              <span>{"Username:" + " " + response.name}</span>
               <span>{"Email:" + " " + response.email}</span>
             </div>
           </div>
@@ -125,8 +106,10 @@ function CreateUsers() {
 
       <div className="container m-auto">
         <ul className="flex flex-row justify-center items-center gap-30 text-white border-1 rounded-lg p-2">
+
+          <li>Id</li>
           <li>Name</li>
-          <li>City</li>
+          <li>Website</li>
           <li>Phone</li>
           <li>Email</li>
           <li>Action</li>
@@ -139,8 +122,9 @@ function CreateUsers() {
             key={user.id}
             className="flex flex-row justify-center items-center gap-10 text-white"
           >
+            <li>{user.id}</li>
             <li>{user.name}</li>
-            <li>{user.address.city}</li>
+            <li>{user.website}</li>
             <li>{user.phone}</li>
             <li>{user.email}</li>
             <li>
