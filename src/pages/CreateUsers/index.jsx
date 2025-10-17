@@ -16,14 +16,17 @@ function CreateUsers() {
 
   const handelSubmit = async (e) => {
     e.preventDefault();
-    
+
    if (formData.email.length || formData.name.length) {
-      setUsers(prevUsers => [...prevUsers, { ...formData, id: prevUsers.length + 1 }]);
+      const newId = users.length + 1;  
+      const newUser = { ...formData, id: newId }; 
+      setUsers(prevUsers => [...prevUsers, newUser ]);
+      setResponse(`User with ID ${newId} was "Added" `)
       setError(null);
+      console.log(users); 
     } else {
       setError("Input Fields Is Empty");
     }
-    console.log(users); 
   };
 
   const userData = async () => {
@@ -90,14 +93,9 @@ function CreateUsers() {
           </button>
         </form>
         {response && (
-          <div className="text-white mt-10">
-            <h2>Response from Server:</h2>
-            <div className="flex flex-row p-10 gap-5">
-              <span>{"Id:" + " " + response.id}</span>
-              <span>{"Username:" + " " + response.name}</span>
-              <span>{"Email:" + " " + response.email}</span>
-            </div>
-          </div>
+          <p className="container rounded-lg mt-5 bg-lime-950 text-lime-400 font-bold p-5 m-auto">
+            {response}
+          </p>
         )}
         {error && (
           <p className="text-rose-400 bg-rose-950 p-5 rounded-lg">{error}</p>
