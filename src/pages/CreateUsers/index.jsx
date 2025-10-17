@@ -21,10 +21,11 @@ function CreateUsers() {
       const newId = users.length + 1;  
       const newUser = { ...formData, id: newId }; 
       setUsers(prevUsers => [...prevUsers, newUser ]);
-      setResponse(`User with ID ${newId} was "Added" `)
+      setResponse(`User with ID ${newId} was "Added" `) 
       setError(null);
       console.log(users); 
     } else {
+      setResponse(null) 
       setError("Input Fields Is Empty");
     }
   };
